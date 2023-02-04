@@ -32,10 +32,10 @@ public class Root : MonoBehaviour
 
     void move(int dir)
     {
-        switch(dir)
-        {
-            case 1:
-                this.gameObject.
-        }
+        // switch(dir)
+        // {
+        //     case 1:
+        //         this.gameObject.
+        // }
     }
 }
