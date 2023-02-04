@@ -29,7 +29,12 @@ public class Root : MonoBehaviour
     public GameObject root;
     public GameObject cameraObj;
     public bool end;
+    public bool win;
+    public GameObject rocks;
+    public GameObject water;
 
+    private List<Vector3> rock_pos = new List<Vector3>();
+    private Vector3 water_pos;
     private float unitLength = 0.5f;
 
     // Start is called before the first frame update
@@ -44,6 +49,10 @@ public class Root : MonoBehaviour
         new_root.transform.SetParent(parentRoot.transform);
         roots.Add(new_root);
         path.Add(tip_pos);
+        foreach (Transform rock in rocks.transform){
+            rock_pos.Add(rock.position);
+        }
+        water_pos = water.transform.position;
     }
 
     // Update is called once per frame
@@ -153,40 +162,41 @@ public class Root : MonoBehaviour
                 break;
         }
         roots[roots.Count-1].transform.SetParent(parentRoot.transform);
-        if (path.Contains(tip_pos))
+        GameObject new_root;
+        switch(dir)
+        {
+            case 0:
+                new_root = Instantiate(downtip, tip_pos+downtip.transform.localPosition,downtip.transform.rotation);
+                new_root.transform.SetParent(parentRoot.transform);
+                roots.Add(new_root);
+                break;
+            case 1:
+                new_root = Instantiate(lefttip, tip_pos+lefttip.transform.localPosition,lefttip.transform.rotation);
+                new_root.transform.SetParent(parentRoot.transform);
+                roots.Add(new_root);
+                break;
+            case 2:
+                new_root = Instantiate(uptip, tip_pos+uptip.transform.localPosition,uptip.transform.rotation);
+                new_root.transform.SetParent(parentRoot.transform);
+                roots.Add(new_root);
+                break;
+            case 3:
+                new_root = Instantiate(righttip, tip_pos+righttip.transform.localPosition,righttip.transform.rotation);
+                new_root.transform.SetParent(parentRoot.transform);
+                roots.Add(new_root);
+                break;
+        }
+        if (path.Contains(tip_pos) || rock_pos.Contains(tip_pos))
         {
             end = true;
         }
-        else
+        if (tip_pos == water_pos)
         {
-            GameObject new_root;
-            switch(dir)
-            {
-                case 0:
-                    new_root = Instantiate(downtip, tip_pos,downtip.transform.rotation);
-                    new_root.transform.SetParent(parentRoot.transform);
-                    roots.Add(new_root);
-                    break;
-                case 1:
-                    new_root = Instantiate(lefttip, tip_pos,lefttip.transform.rotation);
-                    new_root.transform.SetParent(parentRoot.transform);
-                    roots.Add(new_root);
-                    break;
-                case 2:
-                    new_root = Instantiate(uptip, tip_pos,uptip.transform.rotation);
-                    new_root.transform.SetParent(parentRoot.transform);
-                    roots.Add(new_root);
-                    break;
-                case 3:
-                    new_root = Instantiate(righttip, tip_pos,righttip.transform.rotation);
-                    new_root.transform.SetParent(parentRoot.transform);
-                    roots.Add(new_root);
-                    break;
-            }
-            path.Add(tip_pos);
-            prev_dir = dir;
-            cameraObj.transform.position = tip_pos + new Vector3(0,0,-10);
+            win = true;
         }
+        path.Add(tip_pos);
+        prev_dir = dir;
+        cameraObj.transform.position = tip_pos + new Vector3(0,0,-10);
     }
 
     void retract()
@@ -201,22 +211,22 @@ public class Root : MonoBehaviour
             switch(path[path.Count-1]-path[path.Count-2])
             {
                 case Vector3 v when v.Equals(Vector3.down):
-                    roots[roots.Count-1] = Instantiate(downtip, tip_pos,downtip.transform.rotation);
+                    roots[roots.Count-1] = Instantiate(downtip, tip_pos+downtip.transform.localPosition,downtip.transform.rotation);
                     prev_dir = 0;
                     dir = 0;
                     break;
                 case Vector3 v when v.Equals(Vector3.left):
-                    roots[roots.Count-1] = Instantiate(lefttip, tip_pos,lefttip.transform.rotation);
+                    roots[roots.Count-1] = Instantiate(lefttip, tip_pos+lefttip.transform.localPosition,lefttip.transform.rotation);
                     prev_dir = 1;
                     dir = 1;
                     break;
                 case Vector3 v when v.Equals(Vector3.up):
-                    roots[roots.Count-1] = Instantiate(uptip, tip_pos,uptip.transform.rotation);
+                    roots[roots.Count-1] = Instantiate(uptip, tip_pos+uptip.transform.localPosition,uptip.transform.rotation);
                     prev_dir = 2;
                     dir = 2;
                     break;
                 case Vector3 v when v.Equals(Vector3.right):
-                    roots[roots.Count-1] = Instantiate(uptip, tip_pos,uptip.transform.rotation);
+                    roots[roots.Count-1] = Instantiate(righttip, tip_pos+righttip.transform.localPosition,righttip.transform.rotation);
                     prev_dir = 3;
                     dir = 3;
                     break;
