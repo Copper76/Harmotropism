@@ -180,7 +180,7 @@ public class Root : MonoBehaviour
         }
         path.Add(tip_pos);
         prev_dir = dir;
-        cameraObj.transform.position = tip_pos + new Vector3(0,0,-10);
+        cameraObj.transform.position = tip_pos + new Vector3(0,0,-4);
     }
 
     void retract()
@@ -218,6 +218,6 @@ public class Root : MonoBehaviour
             prev_dir = 0;
             dir = 0;
         }
-        cameraObj.transform.position = tip_pos + new Vector3(0,0,-10);
+        cameraObj.transform.position = tip_pos + new Vector3(0,0,-4);
     }
 }
