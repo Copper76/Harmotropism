@@ -1,19 +1,9 @@
 fileFormatVersion: 2
-guid: 3fbbbd0d12735e14da055543fa47a14e
+guid: 4396e74222a90364da6dca64c7d6992a
 ModelImporter:
   serializedVersion: 22103
   internalIDToNameTable: []
-  externalObjects:
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: stem
-    second: {fileID: 2100000, guid: e17dbe3b52a5bd74a8a1abfa3bb71c85, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: sunflower_parts
-    second: {fileID: 2100000, guid: a94db817bff53d24d8145e8ec1e37bd2, type: 2}
+  externalObjects: {}
   materials:
     materialImportMode: 2
     materialName: 0
@@ -76,7 +66,7 @@ ModelImporter:
     secondaryUVMinLightmapResolution: 40
     secondaryUVMinObjectScale: 1
     secondaryUVPackMargin: 4
-    useFileScale: 0
+    useFileScale: 1
     strictVertexDataChecks: 0
   tangentSpace:
     normalSmoothAngle: 60
