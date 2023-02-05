@@ -179,9 +179,12 @@ public class Root : MonoBehaviour
                 roots.Add(new_root);
                 break;
         }
-        if (rock_pos.Contains(tip_pos))
-        {
-            end = true;
+        foreach (Vector3 pos in rock_pos){
+            if (pos.x == tip_pos.x && pos.y == tip_pos.y)
+            {
+                end = true;
+                break;
+            }
         }
         foreach (Vector3 pos in water_pos){
             if (pos.x == tip_pos.x && pos.y == tip_pos.y)
