@@ -36,6 +36,8 @@ public class Root : MonoBehaviour
     public AudioSource moveSound;
     public AudioSource backgroundMusic;
     public AudioSource retractMusic;
+    public AudioSource rockMusic;
+    public AudioSource waterMusic;
 
     private List<Vector3> rock_pos = new List<Vector3>();
     private List<Vector3> water_pos = new List<Vector3>(); 
@@ -66,6 +68,8 @@ public class Root : MonoBehaviour
     {
         if (!end)
         {
+            updateRock();
+            updateWater();
             //Debug.Log(Time.time);
             if (Input.GetKey(KeyCode.Space))
             {
@@ -227,5 +231,33 @@ public class Root : MonoBehaviour
             dir = 0;
         }
         cameraObj.transform.position = tip_pos + new Vector3(0,0,-4);
+    }
+
+    void updateRock()
+    {
+        float closestDist = 5f;
+        float dist = closestDist;
+        foreach (Vector3 pos in rock_pos){
+            dist = Vector3.Distance(pos,tip_pos);
+            if (dist<closestDist)
+            {
+                closestDist = dist;
+            }
+        }
+        rockMusic.volume = (5f-closestDist)/10;
+    }
+
+    void updateWater()
+    {
+        float closestDist = 5f;
+        float dist = closestDist;
+        foreach (Vector3 pos in water_pos){
+            dist = Vector3.Distance(pos,tip_pos);
+            if (dist<closestDist)
+            {
+                closestDist = dist;
+            }
+        }
+        waterMusic.volume = (5f-closestDist)/10;
     }
 }
