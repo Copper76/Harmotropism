@@ -33,6 +33,9 @@ public class Root : MonoBehaviour
     public GameObject rocks;
     public GameObject waters;
     public Vector3 check_point;
+    public AudioSource moveSound;
+    public AudioSource backgroundMusic;
+    public AudioSource retractMusic;
 
     private List<Vector3> rock_pos = new List<Vector3>();
     private List<Vector3> water_pos = new List<Vector3>(); 
@@ -66,6 +69,8 @@ public class Root : MonoBehaviour
             //Debug.Log(Time.time);
             if (Input.GetKey(KeyCode.Space))
             {
+                backgroundMusic.volume = 0.0f;
+                retractMusic.volume = 1.0f;
                 if (Time.time >= nextRetract && path.Count > 1 && tip_pos != check_point)
                 {
                     retract();
@@ -73,6 +78,8 @@ public class Root : MonoBehaviour
             }
             else
             {
+                backgroundMusic.volume = 1.0f;
+                retractMusic.volume = 0.0f;
                 if (Input.GetKeyDown("a") && prev_dir != 3)
                 { 
                     dir = 1;
@@ -104,6 +111,7 @@ public class Root : MonoBehaviour
     void move(int dir)
     {
         Destroy(roots[roots.Count-1]);
+        moveSound.Play();
         switch(dir)
         {
             case 0:
