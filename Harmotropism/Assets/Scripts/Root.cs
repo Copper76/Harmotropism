@@ -31,10 +31,11 @@ public class Root : MonoBehaviour
     public bool end;
     public bool win;
     public GameObject rocks;
-    public GameObject water;
+    public GameObject waters;
+    public Vector3 check_point;
 
     private List<Vector3> rock_pos = new List<Vector3>();
-    private Vector3 water_pos;
+    private List<Vector3> water_pos = new List<Vector3>(); 
     private float unitLength = 0.5f;
 
     // Start is called before the first frame update
@@ -52,7 +53,9 @@ public class Root : MonoBehaviour
         foreach (Transform rock in rocks.transform){
             rock_pos.Add(rock.position);
         }
-        water_pos = water.transform.position;
+        foreach (Transform water in waters.transform){
+            water_pos.Add(water.position);
+        }
     }
 
     // Update is called once per frame
@@ -63,20 +66,24 @@ public class Root : MonoBehaviour
             Debug.Log(Time.time);
             if (Input.GetKey(KeyCode.Space))
             {
-                if (Time.time >= nextRetract && path.Count > 1)
+                if (Time.time >= nextRetract && path.Count > 1 && tip_pos != check_point)
                 {
                     retract();
                 }
             }
             else
             {
-                if (Input.GetKeyDown("a") && dir != (prev_dir+3) % 4)
+                if (Input.GetKeyDown("a") && dir != 3)
                 { 
-                    dir = (dir+3) % 4;
+                    dir = 1;
                 }
-                if (Input.GetKeyDown("d") && dir != (prev_dir+1) % 4)
+                if (Input.GetKeyDown("d") && dir != 1)
                 {
-                    dir = (dir+1) % 4;
+                    dir = 3;
+                }
+                if (Input.GetKeyDown("s"))
+                {
+                    dir = 0;
                 }
                 if (Time.time >= nextGrow)
                 {
@@ -190,9 +197,12 @@ public class Root : MonoBehaviour
         {
             end = true;
         }
-        if (tip_pos == water_pos)
-        {
-            win = true;
+        foreach (Vector3 pos in water_pos){
+            if (pos.x == tip_pos.x && pos.y == tip_pos.y)
+            {
+                check_point = tip_pos;
+                break;
+            }
         }
         path.Add(tip_pos);
         prev_dir = dir;
