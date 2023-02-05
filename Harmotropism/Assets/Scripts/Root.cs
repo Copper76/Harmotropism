@@ -63,7 +63,7 @@ public class Root : MonoBehaviour
     {
         if (!end)
         {
-            Debug.Log(Time.time);
+            //Debug.Log(Time.time);
             if (Input.GetKey(KeyCode.Space))
             {
                 if (Time.time >= nextRetract && path.Count > 1 && tip_pos != check_point)
@@ -73,11 +73,11 @@ public class Root : MonoBehaviour
             }
             else
             {
-                if (Input.GetKeyDown("a") && dir != 3)
+                if (Input.GetKeyDown("a") && prev_dir != 3)
                 { 
                     dir = 1;
                 }
-                if (Input.GetKeyDown("d") && dir != 1)
+                if (Input.GetKeyDown("d") && prev_dir != 1)
                 {
                     dir = 3;
                 }
@@ -128,29 +128,11 @@ public class Root : MonoBehaviour
                     case 1:
                         roots[roots.Count-1] = Instantiate(leftstraight, tip_pos,leftstraight.transform.rotation);
                         break;
-                    case 2:
-                        roots[roots.Count-1] = Instantiate(upleftcurve, tip_pos,upleftcurve.transform.rotation);
-                        break;
                     case 0:
                         roots[roots.Count-1] = Instantiate(downleftcurve, tip_pos,downleftcurve.transform.rotation);
                         break;
                 }
                 tip_pos += new Vector3(unitLength*-1,0,0);
-                break;
-            case 2:
-                switch(prev_dir)
-                {
-                    case 2:
-                        roots[roots.Count-1] = Instantiate(upstraight, tip_pos,upstraight.transform.rotation);
-                        break;
-                    case 1:
-                        roots[roots.Count-1] = Instantiate(downrightcurve, tip_pos,downrightcurve.transform.rotation);
-                        break;
-                    case 3:
-                        roots[roots.Count-1] = Instantiate(downleftcurve, tip_pos,downleftcurve.transform.rotation);
-                        break;
-                }
-                tip_pos += new Vector3(0,unitLength,0);
                 break;
             case 3:
                 switch(prev_dir)
@@ -160,9 +142,6 @@ public class Root : MonoBehaviour
                         break;
                     case 0:
                         roots[roots.Count-1] = Instantiate(downrightcurve, tip_pos,downrightcurve.transform.rotation);
-                        break;
-                    case 2:
-                        roots[roots.Count-1] = Instantiate(uprightcurve, tip_pos,uprightcurve.transform.rotation);
                         break;
                 }
                 tip_pos += new Vector3(unitLength,0,0);
@@ -182,18 +161,13 @@ public class Root : MonoBehaviour
                 new_root.transform.SetParent(parentRoot.transform);
                 roots.Add(new_root);
                 break;
-            case 2:
-                new_root = Instantiate(uptip, tip_pos+uptip.transform.localPosition,uptip.transform.rotation);
-                new_root.transform.SetParent(parentRoot.transform);
-                roots.Add(new_root);
-                break;
             case 3:
                 new_root = Instantiate(righttip, tip_pos+righttip.transform.localPosition,righttip.transform.rotation);
                 new_root.transform.SetParent(parentRoot.transform);
                 roots.Add(new_root);
                 break;
         }
-        if (path.Contains(tip_pos) || rock_pos.Contains(tip_pos))
+        if (rock_pos.Contains(tip_pos))
         {
             end = true;
         }
@@ -218,24 +192,20 @@ public class Root : MonoBehaviour
         tip_pos = path[path.Count-1];
         if (path.Count>2)
         {
+            Debug.Log(path[path.Count-1]-path[path.Count-2]);
             switch(path[path.Count-1]-path[path.Count-2])
             {
-                case Vector3 v when v.Equals(Vector3.down):
+                case Vector3 v when v.Equals(Vector3.down*0.5f):
                     roots[roots.Count-1] = Instantiate(downtip, tip_pos+downtip.transform.localPosition,downtip.transform.rotation);
                     prev_dir = 0;
                     dir = 0;
                     break;
-                case Vector3 v when v.Equals(Vector3.left):
+                case Vector3 v when v.Equals(Vector3.left*0.5f):
                     roots[roots.Count-1] = Instantiate(lefttip, tip_pos+lefttip.transform.localPosition,lefttip.transform.rotation);
                     prev_dir = 1;
                     dir = 1;
                     break;
-                case Vector3 v when v.Equals(Vector3.up):
-                    roots[roots.Count-1] = Instantiate(uptip, tip_pos+uptip.transform.localPosition,uptip.transform.rotation);
-                    prev_dir = 2;
-                    dir = 2;
-                    break;
-                case Vector3 v when v.Equals(Vector3.right):
+                case Vector3 v when v.Equals(Vector3.right*0.5f):
                     roots[roots.Count-1] = Instantiate(righttip, tip_pos+righttip.transform.localPosition,righttip.transform.rotation);
                     prev_dir = 3;
                     dir = 3;
